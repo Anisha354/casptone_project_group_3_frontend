@@ -11,6 +11,11 @@ const ItemBox = styled.div`
   gap: 16px;
   border-bottom: 1px solid #eee;
   padding: 24px 0;
+  @media (max-width: 600px) {
+    /* NEW – stack on very small */
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const Image = styled.img`
@@ -18,6 +23,12 @@ const Image = styled.img`
   height: 200px;
   object-fit: cover;
   border-radius: 8px;
+  @media (max-width: 600px) {
+    /* NEW – full-width pic on phone */
+    width: 100%;
+    height: auto;
+    max-height: 300px;
+  }
 `;
 
 const Info = styled.div`
@@ -25,6 +36,10 @@ const Info = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  @media (max-width: 600px) {
+    /* NEW – full width */
+    width: 100%;
+  }
 `;
 
 const Brand = styled.div`
@@ -41,6 +56,7 @@ const PriceRow = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap; /* NEW – prevent overflow */
 `;
 
 const Price = styled.span`
@@ -73,6 +89,7 @@ const Controls = styled.div`
   align-items: center;
   gap: 8px;
   margin-top: 8px;
+  flex-wrap: wrap; /* NEW – buttons wrap on phone */
 `;
 
 export default function CartItem({ item, onChangeQty, onRemove }) {
