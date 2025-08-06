@@ -1,4 +1,3 @@
-// src/pages/Authentication.jsx
 import React, { useState } from "react";
 import { Modal } from "@mui/material";
 import styled from "styled-components";
@@ -26,6 +25,12 @@ const AuthContainer = styled.div`
   display: flex;
   flex-direction: column;
   box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2);
+  @media (max-width: 768px) {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+    overflow-y: auto; /* NEW – allow full-page scroll on mobile */
+  }
 `;
 
 const Header = styled.div`
@@ -68,6 +73,9 @@ const LeftPane = styled.div`
   align-items: center;
   justify-content: center;
   padding: 24px;
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const DressLogoImg = styled.img`
@@ -81,11 +89,19 @@ const RightPane = styled.div`
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  @media (max-width: 768px) {
+    padding: 24px 16px;
+    flex: none;
+    height: 100%;
+  }
 `;
 
 const ToggleWrapper = styled.div`
   margin-top: auto;
   text-align: center;
+  @media (max-width: 768px) {
+    margin-top: 24px;
+  }
 `;
 
 const ToggleText = styled.span`
