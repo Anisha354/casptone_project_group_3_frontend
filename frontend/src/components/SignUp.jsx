@@ -7,13 +7,17 @@ import { useDispatch } from "react-redux";
 import { loginSuccess } from "../redux/reducers/userSlice";
 import { openSnackbar } from "../redux/reducers/snackbarSlice";
 
-/* ── styled (unchanged) ───────────────────────────────────── */
 const Container = styled.div`
   width: 100%;
   max-width: 520px;
   display: flex;
   flex-direction: column;
   gap: 40px;
+  @media (max-width: 768px) {
+    max-width: 100%;
+    overflow-y: auto; /* NEW – let the form itself scroll */
+    padding-bottom: 32px; /* NEW – tiny space below the button */
+  }
 `;
 const Header = styled.div`
   display: flex;
@@ -71,44 +75,34 @@ const MeterBar = styled.div`
   }}
 `;
 
-/* ── component ───────────────────────────────────────────── */
 const SignUp = ({ setOpenAuth }) => {
   const dispatch = useDispatch();
 
-  /* values */
   const [first, setFirst] = useState("");
   const [last, setLast] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
 
-  /* touched flags */
   const [touched, setTouched] = useState({
     first: false,
-
     email: false,
     password: false,
     confirm: false,
   });
 
-  /* ui */
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
 
-  /* errors & strength */
   const [errors, setErrors] = useState({});
   const [strength, setStrength] = useState(0);
   const [serverEmailError, setServerEmailError] = useState("");
 
-  /* live validation */
   useEffect(() => {
     const newErrors = {};
-
-    /* first/last */
     if (touched.first && !first.trim())
       newErrors.first = "First name is required";
 
-    /* email */
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (touched.email) {
       if (!email.trim()) newErrors.email = "Email is required";
@@ -116,14 +110,12 @@ const SignUp = ({ setOpenAuth }) => {
         newErrors.email = "Please enter a valid email";
     }
 
-    /* password */
     if (touched.password) {
       if (!password) newErrors.password = "Password is required";
       else if (password.length < 6)
         newErrors.password = "Password must be at least 6 characters";
     }
 
-    /* confirm */
     if (touched.confirm) {
       if (!confirm) newErrors.confirm = "Please confirm your password";
       else if (confirm !== password)
@@ -132,7 +124,6 @@ const SignUp = ({ setOpenAuth }) => {
 
     setErrors(newErrors);
 
-    /* strength meter */
     const calc = (pwd) => {
       if (!pwd || pwd.length < 6) return 0;
       const classes =
@@ -143,12 +134,11 @@ const SignUp = ({ setOpenAuth }) => {
       return (classes / 4) * 100;
     };
     setStrength(calc(password));
-  }, [first, last, email, password, confirm, touched]);
+  }, [first, email, password, confirm, touched]);
 
   const markAllTouched = () =>
     setTouched({
       first: true,
-
       email: true,
       password: true,
       confirm: true,
@@ -209,14 +199,12 @@ const SignUp = ({ setOpenAuth }) => {
     }
   };
 
-  /* helpers ------------------------------------------------ */
   const onChange = (setter, key) => (e) => {
     setter(e.target.value);
     setServerEmailError("");
     setTouched((t) => ({ ...t, [key]: true }));
   };
 
-  /* ui ----------------------------------------------------- */
   return (
     <Container>
       <Header>
@@ -225,7 +213,6 @@ const SignUp = ({ setOpenAuth }) => {
       </Header>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
-        {/* first & last */}
         <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
           <div style={{ flex: 1, minWidth: 200 }}>
             <TextInput
@@ -249,7 +236,6 @@ const SignUp = ({ setOpenAuth }) => {
           </div>
         </div>
 
-        {/* email */}
         <div>
           <TextInput
             label="Email Address"
@@ -263,7 +249,6 @@ const SignUp = ({ setOpenAuth }) => {
           )}
         </div>
 
-        {/* password */}
         <div>
           <TextInput
             label="Password"
@@ -294,7 +279,6 @@ const SignUp = ({ setOpenAuth }) => {
           )}
         </div>
 
-        {/* confirm */}
         <div>
           <TextInput
             label="Confirm Password"
