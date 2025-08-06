@@ -12,6 +12,12 @@ const SummaryBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
+  @media (max-width: 800px) {
+    /* NEW – fix mobile overflow */
+    width: 100%;
+    box-sizing: border-box;
+    padding: 24px 16px;
+  }
 `;
 
 const Row = styled.div`
