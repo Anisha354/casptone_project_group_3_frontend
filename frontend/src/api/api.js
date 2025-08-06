@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const API_ROOT = (
-  process.env.REACT_APP_API_URL || "http://localhost:8000"
+  process.env.REACT_APP_API_URL || "https://casptone-project-group-3-backend.onrender.com"
 ).replace(/\/+$/, "");
 
 export const API = axios.create({
