@@ -9,13 +9,15 @@ import { loginSuccess } from "../redux/reducers/userSlice";
 import { openSnackbar } from "../redux/reducers/snackbarSlice";
 import { useNavigate, Link } from "react-router-dom";
 
-/* ─── styled (unchanged basics) ─── */
 const Container = styled.div`
   width: 100%;
   max-width: 520px;
   display: flex;
   flex-direction: column;
   gap: 40px;
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
 `;
 const Header = styled.div`
   display: flex;
@@ -55,12 +57,10 @@ const ForgotLink = styled(Link)`
   }
 `;
 
-/* ─── component ─── */
 const SignIn = ({ setOpenAuth }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  /* state */
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [touched, setTouched] = useState({ email: false, password: false });
@@ -69,7 +69,6 @@ const SignIn = ({ setOpenAuth }) => {
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState("");
 
-  /* validation & helpers (unchanged) */
   useEffect(() => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const newErrors = {};
@@ -136,7 +135,6 @@ const SignIn = ({ setOpenAuth }) => {
     setTouched((t) => ({ ...t, [key]: true }));
   };
 
-  /* ─── UI ─── */
   return (
     <Container>
       <Header>
@@ -145,7 +143,6 @@ const SignIn = ({ setOpenAuth }) => {
       </Header>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
-        {/* e-mail field */}
         <div>
           <TextInput
             label="Email Address"
@@ -157,7 +154,6 @@ const SignIn = ({ setOpenAuth }) => {
           {errors.email && <Helper error>{errors.email}</Helper>}
         </div>
 
-        {/* password field */}
         <div>
           <TextInput
             label="Password"
@@ -172,7 +168,6 @@ const SignIn = ({ setOpenAuth }) => {
           )}
         </div>
 
-        {/* link that closes modal + navigates */}
         <ForgotLink
           to="/forgot-password"
           onClick={() => setOpenAuth && setOpenAuth(false)}
