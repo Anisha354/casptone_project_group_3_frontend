@@ -3,11 +3,12 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ProductCard from "../components/ProductCard";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom"; 
 import { getAllProducts, addToCart, fetchCart } from "../utils/api";
 import { loadCart } from "../redux/reducers/cartSlice";
 import { openSnackbar } from "../redux/reducers/snackbarSlice";
 
+/* ───── styled ───── */
 const Controls = styled.div`
   display: flex;
   gap: 16px;
@@ -39,10 +40,15 @@ const Wrap = styled.div`
   justify-content: center;
 `;
 
+/* ───── component ───── */
 export default function ProductsPage() {
+  const location = useLocation(); // NEW
+  const initialCat =
+    new URLSearchParams(location.search).get("category") || "All"; // NEW
+
   const [list, setList] = useState([]);
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("All");
+  const [category, setCategory] = useState(initialCat); // MOD
   const [sort, setSort] = useState("");
   const [categories, setCategories] = useState([]);
 
@@ -50,7 +56,7 @@ export default function ProductsPage() {
   const dispatch = useDispatch();
   const nav = useNavigate();
 
-  // load products + derive categories
+  /* load products + derive categories */
   useEffect(() => {
     getAllProducts()
       .then(({ data }) => {
@@ -69,7 +75,13 @@ export default function ProductsPage() {
       });
   }, [dispatch]);
 
-  // add-to-cart handler
+  /* update category when URL param changes */
+  useEffect(() => {
+    const cat = new URLSearchParams(location.search).get("category") || "All";
+    setCategory(cat);
+  }, [location.search]);
+
+  /* add-to-cart handler */
   const handleAdd = async (id, qty = 1) => {
     if (!token) {
       nav("/signin");
@@ -85,7 +97,7 @@ export default function ProductsPage() {
     }
   };
 
-  // apply search, category filter, and sort
+  /* apply search, category filter & sort */
   let filtered = list.filter((p) =>
     p.name.toLowerCase().includes(search.toLowerCase())
   );
@@ -119,6 +131,26 @@ export default function ProductsPage() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
+
+        {/* category selector */}
+        <Select
+          value={category}
+          onChange={(e) => {
+            setCategory(e.target.value);
+            nav(
+              e.target.value === "All"
+                ? "/products"
+                : `/products?category=${encodeURIComponent(e.target.value)}`
+            );
+          }}
+        >
+          <option value="All">All Categories</option>
+          {categories.map((c) => (
+            <option key={c} value={c}>
+              {c}
+            </option>
+          ))}
+        </Select>
 
         <Select value={sort} onChange={(e) => setSort(e.target.value)}>
           <option value="">Sort By</option>
