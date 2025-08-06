@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/static/css/main.3572f698.css",
+    "main.js": "/static/js/main.48910622.js",
+    "static/media/Header.png": "/static/media/Header.0b5252c82ac77b9e7a76.png",
+    "static/media/AuthImage.png": "/static/media/AuthImage.4ce785bee254b9ae2283.png",
+    "static/media/Logo.png": "/static/media/Logo.ce0adbbe4cf968fada26.png",
+    "static/media/category1.png": "/static/media/category1.fe1e03ccbf8afbf7df29.png",
+    "static/media/phones.png": "/static/media/phones.0713b14ed4d9ae50854b.png",
+    "static/media/ps5.png": "/static/media/ps5.76420d59082743ade7f3.png",
+    "index.html": "/index.html",
+    "main.3572f698.css.map": "/static/css/main.3572f698.css.map",
+    "main.48910622.js.map": "/static/js/main.48910622.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3572f698.css",
+    "static/js/main.48910622.js"
+  ]
+}
