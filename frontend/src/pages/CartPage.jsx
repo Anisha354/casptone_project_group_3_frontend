@@ -1,4 +1,3 @@
-// src/pages/CartPage.jsx
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
@@ -15,6 +14,10 @@ const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 40px 20px;
+  @media (max-width: 800px) {
+    /* NEW – tighter padding on phones */
+    padding: 24px 12px;
+  }
 `;
 
 const CartGrid = styled.div`
@@ -49,6 +52,10 @@ const RecGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 20px;
+  @media (max-width: 500px) {
+    /* NEW – slimmer cards on very small */
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
 `;
 
 export default function CartPage() {
