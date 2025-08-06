@@ -130,6 +130,44 @@ const OverlayIcons = styled.div`
   align-items: center;
 `;
 
+/* ───── dropdown styles (unchanged) ───── */
+const DropdownContainer = styled.div`
+  position: relative;
+  display: inline-block;
+`;
+
+const DropdownMenu = styled.ul`
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: ${({ theme }) => theme.bg};
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  list-style: none;
+  padding: 8px 0;
+  margin: 0;
+  border-radius: 6px;
+  display: none;
+  min-width: 160px;
+  z-index: 10;
+
+  ${DropdownContainer}:hover & {
+    display: block;
+  }
+`;
+
+const DropdownItem = styled(NavLink)`
+  display: block;
+  padding: 8px 16px;
+  font-size: 14px;
+  color: ${({ theme }) => theme.text_primary};
+  text-decoration: none;
+  white-space: nowrap;
+  &:hover {
+    background: ${({ theme }) => theme.primary + "15"};
+    color: ${({ theme }) => theme.primary};
+  }
+`;
+
 const Navbar = ({ openAuth, setOpenAuth, currentUser }) => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
@@ -152,7 +190,50 @@ const Navbar = ({ openAuth, setOpenAuth, currentUser }) => {
             <StyledLink to="/">Home</StyledLink>
           </li>
           <li>
-            <StyledLink to="/products">Shop</StyledLink>
+            {/* category dropdown */}
+            <DropdownContainer>
+              <StyledLink to="/products">Shop</StyledLink>
+              <DropdownMenu>
+                <li>
+                  <DropdownItem to="/products">All</DropdownItem>
+                </li>
+                <li>
+                  <DropdownItem to="/products?category=Dress">
+                    Dresses
+                  </DropdownItem>
+                </li>
+                <li>
+                  <DropdownItem to="/products?category=Accessory">
+                    Accessories
+                  </DropdownItem>
+                </li>
+                <li>
+                  <DropdownItem to="/products?category=Bag">Bags</DropdownItem>
+                </li>
+                {/* NEW categories */}
+                <li>
+                  <DropdownItem to="/products?category=Footwear">
+                    Footwear
+                  </DropdownItem>
+                </li>
+                <li>
+                  <DropdownItem to="/products?category=Jacket">
+                    Jackets
+                  </DropdownItem>
+                </li>
+                <li>
+                  <DropdownItem to="/products?category=Hoodie">
+                    Hoodies
+                  </DropdownItem>
+                </li>
+                <li>
+                  <DropdownItem to="/products?category=Bottom%20Wear">
+                    Bottom&nbsp;Wear
+                  </DropdownItem>
+                </li>
+                {/* ─────────────── */}
+              </DropdownMenu>
+            </DropdownContainer>
           </li>
           <li>
             <StyledLink to="/Contact">Contact</StyledLink>
@@ -193,11 +274,70 @@ const Navbar = ({ openAuth, setOpenAuth, currentUser }) => {
                 Home
               </StyledLink>
             </li>
+            {/* mobile category links */}
             <li>
               <StyledLink to="/products" onClick={() => setOpen(false)}>
-                Shop
+                Shop – All
               </StyledLink>
             </li>
+            <li>
+              <StyledLink
+                to="/products?category=Dresses"
+                onClick={() => setOpen(false)}
+              >
+                Dresses
+              </StyledLink>
+            </li>
+            <li>
+              <StyledLink
+                to="/products?category=Accessory"
+                onClick={() => setOpen(false)}
+              >
+                Accessories
+              </StyledLink>
+            </li>
+            <li>
+              <StyledLink
+                to="/products?category=Bag"
+                onClick={() => setOpen(false)}
+              >
+                Bags
+              </StyledLink>
+            </li>
+            {/* NEW mobile categories */}
+            <li>
+              <StyledLink
+                to="/products?category=Footwear"
+                onClick={() => setOpen(false)}
+              >
+                Footwear
+              </StyledLink>
+            </li>
+            <li>
+              <StyledLink
+                to="/products?category=Jacket"
+                onClick={() => setOpen(false)}
+              >
+                Jackets
+              </StyledLink>
+            </li>
+            <li>
+              <StyledLink
+                to="/products?category=Hoodie"
+                onClick={() => setOpen(false)}
+              >
+                Hoodies
+              </StyledLink>
+            </li>
+            <li>
+              <StyledLink
+                to="/products?category=Bottom%20Wear"
+                onClick={() => setOpen(false)}
+              >
+                Bottom&nbsp;Wear
+              </StyledLink>
+            </li>
+            {/* ─────────────────────────────────────── */}
             <li>
               <StyledLink to="/Contact" onClick={() => setOpen(false)}>
                 Contact
