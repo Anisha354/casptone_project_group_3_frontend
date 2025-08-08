@@ -40,6 +40,7 @@ const Section = styled.section`
 
 const FlexContainer = styled.div`
   max-width: 1280px;
+  align-items: center !important;
   margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
