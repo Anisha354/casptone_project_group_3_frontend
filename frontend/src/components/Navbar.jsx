@@ -282,7 +282,7 @@ const Navbar = ({ openAuth, setOpenAuth, currentUser }) => {
             </li>
             <li>
               <StyledLink
-                to="/products?category=Dresses"
+                to="/products?category=Dress"
                 onClick={() => setOpen(false)}
               >
                 Dresses
