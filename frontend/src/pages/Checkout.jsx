@@ -211,10 +211,16 @@ export default function Checkout() {
   const cartItems = useSelector((s) => s.cart);
   const token = useSelector((s) => s.user.token);
 
+  // NEW: sanitize helper (drop any rows with missing product)
+  const sanitizeCart = (arr) =>
+    Array.isArray(arr) ? arr.filter((i) => i && i.product) : [];
+
   // Re-fetch cart on mount
   useEffect(() => {
     if (token) {
-      fetchCart(token).then(({ data }) => dispatch(loadCart(data)));
+      fetchCart(token).then(({ data }) =>
+        dispatch(loadCart(sanitizeCart(data)))
+      ); // ← sanitized
     }
   }, [token, dispatch]);
 
@@ -316,9 +322,12 @@ export default function Checkout() {
     setShowPayModal(false);
   };
 
-  // Compute costs
+  // Compute costs (guard against null products on first render)
   const subtotal = +cartItems
-    .reduce((sum, i) => sum + i.product.price * i.quantity, 0)
+    .reduce(
+      (sum, i) => (i && i.product ? sum + i.product.price * i.quantity : sum),
+      0
+    )
     .toFixed(2);
 
   const addrProvince = addresses[selectedAddrIdx]?.province || "ON";
@@ -344,12 +353,14 @@ export default function Checkout() {
       return;
     }
     const res = await placeOrder(token, {
-      items: cartItems.map((i) => ({
-        id: i.product._id,
-        name: i.product.name,
-        price: i.product.price,
-        quantity: i.quantity,
-      })),
+      items: cartItems
+        .filter((i) => i && i.product) // guard
+        .map((i) => ({
+          id: i.product._id,
+          name: i.product.name,
+          price: i.product.price,
+          quantity: i.quantity,
+        })),
       total: orderTotal,
       address: {
         street: addresses[selectedAddrIdx].street,
@@ -425,17 +436,19 @@ export default function Checkout() {
       {/* Items & Delivery */}
       <ItemsSection>
         <ItemsList>
-          {cartItems.map((i) => (
-            <ItemRow key={i.product._id}>
-              <ItemImage src={i.product.image} alt={i.product.name} />
-              <div>
-                <BoldName>{i.product.name}</BoldName>
+          {cartItems.map((i) =>
+            i && i.product ? (
+              <ItemRow key={i.product._id}>
+                <ItemImage src={i.product.image} alt={i.product.name} />
                 <div>
-                  {i.quantity} × ${i.product.price.toFixed(2)}
+                  <BoldName>{i.product.name}</BoldName>
+                  <div>
+                    {i.quantity} × ${i.product.price.toFixed(2)}
+                  </div>
                 </div>
-              </div>
-            </ItemRow>
-          ))}
+              </ItemRow>
+            ) : null
+          )}
         </ItemsList>
         <DeliveryOptions>
           <div style={{ fontWeight: 600, marginBottom: 8 }}>
