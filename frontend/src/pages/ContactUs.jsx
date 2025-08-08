@@ -15,6 +15,7 @@ const Page = styled.div`
   @media (max-width: 768px) {
     flex-direction: column;
     gap: 40px;
+    padding: 0 16px; /* NEW – tighter padding on phones */
   }
 `;
 
@@ -35,6 +36,20 @@ const Right = styled.div`
     border: 0;
     border-radius: 14px;
   }
+
+  /* NEW – make the map block fit smaller screens */
+  @media (max-width: 1024px) {
+    margin-left: 60px;
+  }
+  @media (max-width: 768px) {
+    margin-left: 0;
+    min-height: 320px;
+    height: 360px; /* give iframe a solid height on mobile */
+  }
+  @media (max-width: 420px) {
+    min-height: 260px;
+    height: 300px;
+  }
 `;
 
 const InfoGrid = styled.div`
@@ -50,6 +65,20 @@ const InfoGrid = styled.div`
   p {
     margin: 0;
     color: ${({ theme }) => theme.text_secondary + 90};
+    word-break: break-word;      /* NEW – prevent overflow on long text */
+    overflow-wrap: anywhere;     /* NEW */
+  }
+
+  /* NEW – stack labels/values vertically on phones */
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 6px 0;
+    h4 {
+      margin-top: 12px;
+    }
+    h4:first-of-type {
+      margin-top: 0;
+    }
   }
 `;
 
@@ -69,6 +98,7 @@ const Form = styled.form`
     padding: 12px 16px;
     border: 1px solid ${({ theme }) => theme.text_secondary + 40};
     border-radius: 8px;
+    box-sizing: border-box; /* NEW – keep inputs inside container */
     &:focus {
       outline: 2px solid ${({ theme }) => theme.primary + 60};
     }
@@ -76,6 +106,16 @@ const Form = styled.form`
   textarea {
     resize: vertical;
     min-height: 120px;
+  }
+
+  /* NEW – improve touch targets on smaller screens */
+  @media (max-width: 768px) {
+    gap: 16px;
+    input,
+    textarea {
+      font-size: 16px; /* iOS zoom prevention */
+      padding: 12px 14px;
+    }
   }
 `;
 
