@@ -18,11 +18,9 @@ const Section = styled.section`
   @media (max-width: 768px) {
     padding: 28px 16px 12px;
 
-
     h2 { font-size: 26px !important; line-height: 1.25 !important; }
     p { font-size: 15px !important; line-height: 1.6 !important; }
 
-   
     h4 { font-size: 18px !important; margin-bottom: 8px !important; }
 
     a span, span {
@@ -54,16 +52,26 @@ const FlexContainer = styled.div`
 
   @media (max-width: 768px) {
     flex-direction: column;
-    align-items: stretch;        
-    gap: 16px;                 
+    align-items: stretch;
+    gap: 16px;
 
     & > div {
       min-width: 0 !important;
       flex: 1 1 auto !important;
     }
 
+    /* limit line length for the brand paragraph only */
     & > div:first-child p {
       max-width: 42ch;
+    }
+  }
+
+  @media (max-width: 768px) {
+    & > div:not(:first-child) {
+      display: flex !important;
+      flex-direction: column;
+      align-items: center !important;   
+      text-align: center !important;    
     }
   }
 `;
