@@ -65,6 +65,10 @@ export default function CartPage() {
   const nav = useNavigate();
   const [recommended, setRecommended] = useState([]);
 
+  /* NEW: defensively drop any cart rows that lack a product */
+  const sanitizeCart = (arr) =>
+    Array.isArray(arr) ? arr.filter((i) => i && i.product) : [];
+
   useEffect(() => {
     if (!token) {
       dispatch(openSnackbar({ message: "Please sign in", severity: "info" }));
@@ -75,11 +79,12 @@ export default function CartPage() {
     // Load cart and then recommended
     fetchCart(token)
       .then(({ data: cartData }) => {
-        dispatch(loadCart(cartData));
-        return api.get("/products").then(({ data: all }) => [cartData, all]);
+        const safeCart = sanitizeCart(cartData); // NEW
+        dispatch(loadCart(safeCart)); // NEW (uses sanitized list)
+        return api.get("/products").then(({ data: all }) => [safeCart, all]); // NEW (pass safe cart forward)
       })
       .then(([cartData, all]) => {
-        const inCart = new Set(cartData.map((i) => i.product._id));
+        const inCart = new Set(cartData.map((i) => i.product._id)); // unchanged, cartData is already safe
         const pool = all.filter((p) => !inCart.has(p._id));
         setRecommended(pool.sort(() => 0.5 - Math.random()).slice(0, 4));
       })
@@ -99,7 +104,8 @@ export default function CartPage() {
     try {
       await updateCart(token, { productId, qty: newQty });
       const { data } = await fetchCart(token);
-      dispatch(loadCart(data));
+      const safe = sanitizeCart(data); // NEW
+      dispatch(loadCart(safe)); // NEW
       const oldQty =
         items.find((i) => i.product._id === productId)?.quantity || 0;
       dispatch(
@@ -122,7 +128,8 @@ export default function CartPage() {
     try {
       await updateCart(token, { productId, qty: 0 });
       const { data } = await fetchCart(token);
-      dispatch(loadCart(data));
+      const safe = sanitizeCart(data); // NEW
+      dispatch(loadCart(safe)); // NEW
       dispatch(
         openSnackbar({ message: "Item removed from cart", severity: "info" })
       );
@@ -141,7 +148,8 @@ export default function CartPage() {
     try {
       await addToCart(token, { productId, qty: 1 });
       const { data } = await fetchCart(token);
-      dispatch(loadCart(data));
+      const safe = sanitizeCart(data); // NEW
+      dispatch(loadCart(safe)); // NEW
       dispatch(openSnackbar({ message: "Added to cart", severity: "success" }));
     } catch {
       dispatch(
