@@ -8,16 +8,38 @@ import {
   FaPinterestP,
 } from "react-icons/fa";
 
-/* 1️⃣  Section is explicitly position: static  */
 const Section = styled.section`
-  position: static !important; /* overrides any global “fixed” rule */
+  position: static !important; 
   width: 100%;
   background: #1a1a1a;
   color: #fff;
   padding: 40px 20px 10px;
+
+  @media (max-width: 768px) {
+    padding: 28px 16px 12px;
+
+
+    h2 { font-size: 26px !important; line-height: 1.25 !important; }
+    p { font-size: 15px !important; line-height: 1.6 !important; }
+
+   
+    h4 { font-size: 18px !important; margin-bottom: 8px !important; }
+
+    a span, span {
+      font-size: 16px !important;
+      margin: 4px 0 !important;
+      line-height: 1.6 !important;
+    }
+
+    svg { font-size: 20px !important; }
+
+    > div:last-child {
+      font-size: 14px !important;
+      margin-top: 18px !important;
+    }
+  }
 `;
 
-/* Wrap for the four columns */
 const FlexContainer = styled.div`
   max-width: 1280px;
   margin: 0 auto;
@@ -26,10 +48,23 @@ const FlexContainer = styled.div`
   gap: 40px;
   justify-content: space-between;
 
+  @media (max-width: 1024px) {
+    gap: 28px;
+  }
+
   @media (max-width: 768px) {
     flex-direction: column;
-    align-items: center;
-    gap: 24px;
+    align-items: stretch;        
+    gap: 16px;                 
+
+    & > div {
+      min-width: 0 !important;
+      flex: 1 1 auto !important;
+    }
+
+    & > div:first-child p {
+      max-width: 42ch;
+    }
   }
 `;
 
